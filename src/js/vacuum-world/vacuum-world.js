@@ -95,7 +95,17 @@ export default class VacuumWorld {
     }
 
     // Generate successor states
-    generateSuccessors(action) {
+    generateSuccessor(action) {
         let validActions = this.getValidActions();
+        if (validActions.indexOf(action) < 0) {
+            console.log(`Action: ${action} is illegal in the current state`);
+        }
+        let successorState = copy(this.currentState);
+        // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
+        // If the vacuum
+        switch (action) {
+            case 'MU':
+
+        }
     }
 }
