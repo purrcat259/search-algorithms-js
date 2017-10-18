@@ -1,7 +1,8 @@
 export default class Node {
-    constructor(state, parentNode) {
+    constructor(state, parentNode, action) {
         this.state = state;
         this.parentNode = parentNode;
+        this.action = action;
     }
 
     print() {
@@ -13,14 +14,14 @@ export default class Node {
             rowString = `${rowString} |`;
             console.log(rowString);
         }
+        console.log(`Action: ${this.action}`);
     }
 
     printPathToRoot() {
-        this.print();
+        console.log(this.action);
         let parent = this.parentNode;
         while (parent) {
-            console.log('------------------');
-            parent.print();
+            console.log(parent.action);
             parent = parent.parentNode;
         }
     }
