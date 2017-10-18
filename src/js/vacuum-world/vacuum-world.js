@@ -70,7 +70,10 @@ export default class VacuumWorld {
 
     run() {
         this.generate();
-        this.generateSuccessor();
+        this.generateSuccessor('MU');
+        this.generateSuccessor('ML');
+        this.generateSuccessor('C');
+        this.generateSuccessor('MD');
     }
 
     // Get the valid actions from the current state
@@ -104,13 +107,45 @@ export default class VacuumWorld {
         let validActions = this.getValidActions();
         if (validActions.indexOf(action) < 0) {
             console.log(`Action: ${action} is illegal in the current state`);
+            return;
         }
-        let successorState = copy(this.currentState);
         // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
         // If the vacuum is in a dirty tile and it decides to clean, simply do -1
-        // switch (action) {
-        //     case 'MU':
-        //
-        // }
+        console.log(`Generating successor state for action: ${action}`);
+        let successorState = copy(this.currentState);
+        let successorNode = null;
+        switch (action) {
+            case 'MU':
+                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
+                successorState[this.currentPosition.row - 1][this.currentPosition.col] += 2;
+                successorNode = new Node(successorState, this.currentNode);
+                break;
+            case 'MR':
+                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
+                successorState[this.currentPosition.row][this.currentPosition.col + 1] += 2;
+                successorNode = new Node(successorState, this.currentNode);
+                break;
+            case 'MD':
+                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
+                successorState[this.currentPosition.row + 1][this.currentPosition.col] += 2;
+                successorNode = new Node(successorState, this.currentNode);
+                break;
+            case 'ML':
+                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
+                successorState[this.currentPosition.row][this.currentPosition.col - 1] += 2;
+                successorNode = new Node(successorState, this.currentNode);
+                break;
+            case 'C':
+                successorState[this.currentPosition.row][this.currentPosition.col] -= 1;
+                successorNode = new Node(successorState, this.currentNode);
+                break;
+        }
+        console.log(`Successor state of action: ${action}`);
+        successorNode.print();
+    }
+
+    moveVacuum(row, col) {
+        this.currentPosition.row = row;
+        this.currentPosition.col = col;
     }
 }
