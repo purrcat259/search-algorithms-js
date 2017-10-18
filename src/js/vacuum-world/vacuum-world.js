@@ -62,7 +62,7 @@ export default class VacuumWorld {
         this.currentPosition.row = 1;
         this.currentPosition.col = 1;
         // Create the initial node
-        this.initialNode = new Node(copy(this.currentState), null);
+        this.initialNode = new Node(copy(this.currentState), null, null);
         this.currentNode = this.initialNode;
         console.log('Initial state: ');
         this.currentNode.print();
@@ -128,34 +128,29 @@ export default class VacuumWorld {
         // If the vacuum is in a dirty tile and it decides to clean, simply do -1
         console.log(`Generating successor state for action: ${action}`);
         let successorState = copy(this.currentState);
-        let successorNode = null;
         switch (action) {
             case 'MU':
                 successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
                 successorState[this.currentPosition.row - 1][this.currentPosition.col] += 2;
-                successorNode = new Node(successorState, this.currentNode);
                 break;
             case 'MR':
                 successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
                 successorState[this.currentPosition.row][this.currentPosition.col + 1] += 2;
-                successorNode = new Node(successorState, this.currentNode);
                 break;
             case 'MD':
                 successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
                 successorState[this.currentPosition.row + 1][this.currentPosition.col] += 2;
-                successorNode = new Node(successorState, this.currentNode);
                 break;
             case 'ML':
                 successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
                 successorState[this.currentPosition.row][this.currentPosition.col - 1] += 2;
-                successorNode = new Node(successorState, this.currentNode);
                 break;
             case 'C':
                 successorState[this.currentPosition.row][this.currentPosition.col] -= 1;
-                successorNode = new Node(successorState, this.currentNode);
                 break;
         }
         console.log(`Successor state of action: ${action}`);
+        let successorNode = new Node(successorState, this.currentNode, action);
         successorNode.print();
         return successorNode;
     }
