@@ -74,7 +74,6 @@ export default class VacuumWorld {
         let depth = 0;
         while (!this.goalReached()) {
             depth += 1;
-            console.log(`Search depth: ${depth}`);
             let validActions = this.getValidActions();
             // Choose a valid action at random
             let action = validActions[Math.floor(Math.random() * validActions.length)];
@@ -87,6 +86,9 @@ export default class VacuumWorld {
         }
         console.log('Final state:');
         this.currentNode.print();
+        console.log('Final path:');
+        this.currentNode.printPathToRoot();
+        console.log(`Final Search depth: ${depth}`);
     }
 
     // Get the valid actions from the current state
