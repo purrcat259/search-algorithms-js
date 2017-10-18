@@ -7,19 +7,20 @@ import uglify from 'gulp-uglify';
 import rename from 'gulp-rename';
 import sourcemaps from 'gulp-sourcemaps';
 
-let indexFile = './src/js/index.js';
+let vacuumWorldFile = './src/js/demo-vacuum-world.js';
+
 
 let stripDirectory = (path) => {
     path.dirname = '';
 };
 
 gulp.task('build_js_dist', () => {
-    let b = browserify(indexFile);
+    let b = browserify(vacuumWorldFile);
 
     return b
         .transform(babelify)
         .bundle()
-        .pipe(source(indexFile))
+        .pipe(source(vacuumWorldFile))
         .pipe(buffer())
         .pipe(rename(stripDirectory))
         .pipe(gulp.dest('./dist'))
@@ -29,10 +30,10 @@ gulp.task('build_js_dist', () => {
 });
 
 gulp.task('build_js', () => {
-    let b = browserify(indexFile);
+    let b = browserify(vacuumWorldFile);
     return b.transform(babelify)
         .bundle()
-        .pipe(source(indexFile))
+        .pipe(source(vacuumWorldFile))
         .pipe(buffer())
         .pipe(rename(stripDirectory))
         .pipe(sourcemaps.init({loadMaps: true}))
