@@ -27,7 +27,7 @@ let removeElement = (array, element) => {
     });
 }
 
-let possibleActions = ['MU', 'ML', 'MD', 'MR', 'MD'];
+let possibleActions = ['MU', 'ML', 'MD', 'MR', 'MD', 'C'];
 
 export default class VacuumWorld {
     constructor(rows, columns) {
@@ -90,6 +90,11 @@ export default class VacuumWorld {
         if (this.currentPosition.col + 1 === this.columns) {
             currentPossibleActions = removeElement(currentPossibleActions, 'MR');
         }
+        // Clean cannot occur in tiles with either state 0 (clean) or state 2 (clean with vacuum)
+        // No need to check for state 0 since the vacuum can only clean its current tile
+        if (this.currentState[this.currentPosition.row][this.currentPosition.col] == 2) {
+            currentPossibleActions = removeElement(currentPossibleActions, 'C');
+        }
         console.log(`Current valid actions: ${currentPossibleActions.toString()}`);
         return currentPossibleActions;
     }
@@ -102,10 +107,10 @@ export default class VacuumWorld {
         }
         let successorState = copy(this.currentState);
         // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
-        // If the vacuum
-        switch (action) {
-            case 'MU':
-
-        }
+        // If the vacuum is in a dirty tile and it decides to clean, simply do -1
+        // switch (action) {
+        //     case 'MU':
+        //
+        // }
     }
 }
