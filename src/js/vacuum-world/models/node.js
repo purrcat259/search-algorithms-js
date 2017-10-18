@@ -14,4 +14,14 @@ export default class Node {
             console.log(rowString);
         }
     }
+
+    printPathToRoot() {
+        this.print();
+        let parent = this.parentNode;
+        while (parent) {
+            console.log('------------------');
+            parent.print();
+            parent = parent.parentNode;
+        }
+    }
 }

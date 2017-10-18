@@ -68,12 +68,25 @@ export default class VacuumWorld {
         this.currentNode.print();
     }
 
+    // Using a breadth first search method
     run() {
         this.generate();
-        this.generateSuccessor('MU');
-        this.generateSuccessor('ML');
-        this.generateSuccessor('C');
-        this.generateSuccessor('MD');
+        let depth = 0;
+        while (!this.goalReached()) {
+            depth += 1;
+            console.log(`Search depth: ${depth}`);
+            let validActions = this.getValidActions();
+            // Choose a valid action at random
+            let action = validActions[Math.floor(Math.random() * validActions.length)];
+            // Generate the successor
+            let successor = this.generateSuccessor(action);
+            // Move the vacuum to that new position
+            this.sendActionToVacuum(action);
+            this.currentNode = successor;
+            this.currentState = successor.state;
+        }
+        console.log('Final state:');
+        this.currentNode.print();
     }
 
     // Get the valid actions from the current state
@@ -142,10 +155,47 @@ export default class VacuumWorld {
         }
         console.log(`Successor state of action: ${action}`);
         successorNode.print();
+        return successorNode;
+    }
+
+    sendActionToVacuum(action) {
+        switch (action) {
+            case 'MU':
+                this.currentPosition.row -= 1;
+                break;
+            case 'MR':
+                this.currentPosition.col += 1;
+                break;
+            case 'MD':
+                this.currentPosition.row += 1;
+                break;
+            case 'ML':
+                this.currentPosition.col -= 1;
+                break;
+            case 'C':
+                this.currentState[this.currentPosition.row][this.currentPosition.col] -= 2;
+                break;
+        }
+        this.moveVacuum(this.currentPosition.row, this.currentPosition.col);
     }
 
     moveVacuum(row, col) {
         this.currentPosition.row = row;
         this.currentPosition.col = col;
+    }
+
+    goalReached() {
+        // For the goal to be reached, all entries but one should be 2.
+        // We can sum the values for all the entries in the state. If it is > 2 at any point then we stop checking
+        let sum = 0;
+        for (let row = 0; row < this.rows; row++) {
+            for (let col = 0; col < this.columns; col++) {
+                sum += this.currentState[row][col];
+                if (sum > 2) {
+                    break;
+                }
+            }
+        }
+        return sum === 2;
     }
 }
