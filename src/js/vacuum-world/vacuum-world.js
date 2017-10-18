@@ -17,6 +17,18 @@ import Node from './models/node';
 * C: Clean
 */
 
+let copy = (data) => {
+    return JSON.parse(JSON.stringify(data));
+};
+
+let removeElement = (array, element) => {
+    return array.filter((e) => {
+        return e !== element;
+    });
+}
+
+let possibleActions = ['MU', 'ML', 'MD', 'MR', 'MD'];
+
 export default class VacuumWorld {
     constructor(rows, columns) {
         this.rows = rows;
@@ -24,6 +36,10 @@ export default class VacuumWorld {
         this.currentState = [];
         this.initialNode = null;
         this.currentNode = null;
+        this.currentPosition = {
+            row: -1,
+            col: -1
+        };
     }
 
     generate() {
@@ -42,7 +58,11 @@ export default class VacuumWorld {
             [1, 1],
             [1, 3]
         ];
-        this.initialNode = new Node(JSON.parse(JSON.stringify(this.currentState)), null);
+        // Set the current position
+        this.currentPosition.row = 1;
+        this.currentPosition.col = 1;
+        // Create the initial node
+        this.initialNode = new Node(copy(this.currentState), null);
         this.currentNode = this.initialNode;
         console.log('Initial state: ');
         this.currentNode.print();
@@ -50,5 +70,32 @@ export default class VacuumWorld {
 
     run() {
         this.generate();
+        this.generateSuccessors();
+    }
+
+    // Get the valid actions from the current state
+    getValidActions() {
+        // Copy the possible actions array
+        let currentPossibleActions = copy(possibleActions);
+        // If the current position is at the edge, then we cannot move in a specific direction
+        if (this.currentPosition.row === 0) {
+            currentPossibleActions = removeElement(currentPossibleActions, 'MU');
+        }
+        if (this.currentPosition.row + 1 === this.rows) {
+            currentPossibleActions = removeElement(currentPossibleActions, 'MD');
+        }
+        if (this.currentPosition.col === 0) {
+            currentPossibleActions = removeElement(currentPossibleActions, 'ML');
+        }
+        if (this.currentPosition.col + 1 === this.columns) {
+            currentPossibleActions = removeElement(currentPossibleActions, 'MR');
+        }
+        console.log(`Current valid actions: ${currentPossibleActions.toString()}`);
+        return currentPossibleActions;
+    }
+
+    // Generate successor states
+    generateSuccessors(action) {
+        let validActions = this.getValidActions();
     }
 }
