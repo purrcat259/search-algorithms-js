@@ -70,7 +70,7 @@ export default class VacuumWorld {
 
     run() {
         this.generate();
-        this.generateSuccessors();
+        this.generateSuccessor();
     }
 
     // Get the valid actions from the current state
