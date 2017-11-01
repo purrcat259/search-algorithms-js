@@ -35,29 +35,6 @@ export default class VacuumWorld {
         this.columns = columns;
     }
 
-    generate() {
-        let initialState = [];
-        console.log(`Generating world with ${this.rows} rows and ${this.columns} columns`);
-        for (let i = 0; i < this.rows; i++) {
-            // Generate an empty array to represent the row
-            initialState.push([]);
-            for (let j = 0; j < this.columns; j++) {
-                // Have an 80% chance of the tile generated being dirty
-                let randomVal = Math.random();
-                initialState[i].push(randomVal < 0.80 ? 1 : 0);
-            }
-        }
-        // Place the vacuum down in a random position by doing +2
-        let randomRow = Math.floor(Math.random() * this.rows);
-        let randomCol = Math.floor(Math.random() * this.columns);
-        initialState[randomRow][randomCol] += 2;
-        // initialState = [
-        //     [1, 1],
-        //     [1, 3]
-        // ];
-        return initialState;
-    }
-
     // Using a breadth first search method
     run() {
         let initialState = this.generate();
@@ -89,6 +66,68 @@ export default class VacuumWorld {
         currentNode.print();
         console.log('Final path:');
         currentNode.printPathToRoot();
+    }
+
+    generate() {
+        let initialState = [];
+        console.log(`Generating world with ${this.rows} rows and ${this.columns} columns`);
+        for (let i = 0; i < this.rows; i++) {
+            // Generate an empty array to represent the row
+            initialState.push([]);
+            for (let j = 0; j < this.columns; j++) {
+                // Have an 80% chance of the tile generated being dirty
+                let randomVal = Math.random();
+                initialState[i].push(randomVal < 0.80 ? 1 : 0);
+            }
+        }
+        // Place the vacuum down in a random position by doing +2
+        let randomRow = Math.floor(Math.random() * this.rows);
+        let randomCol = Math.floor(Math.random() * this.columns);
+        initialState[randomRow][randomCol] += 2;
+        // initialState = [
+        //     [1, 1],
+        //     [1, 3]
+        // ];
+        return initialState;
+    }
+
+    // Generate successor states
+    generateSuccessorNode(action, parentNode) {
+        let successorState = copy(parentNode.state);
+        let validActions = this.getValidActions(successorState);
+        if (validActions.indexOf(action) < 0) {
+            console.error(`Action: ${action} is illegal in the current state`);
+            return;
+        }
+        // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
+        // If the vacuum is in a dirty tile and it decides to clean, simply do -1
+        console.log(`Generating successor state for action: ${action}`);
+        let coordinates = this.getCoordinates(successorState);
+        switch (action) {
+            case 'MU':
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row - 1][coordinates.col] += 2;
+                break;
+            case 'MR':
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row][coordinates.col + 1] += 2;
+                break;
+            case 'MD':
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row + 1][coordinates.col] += 2;
+                break;
+            case 'ML':
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row][coordinates.col - 1] += 2;
+                break;
+            case 'C':
+                successorState[coordinates.row][coordinates.col] -= 1;
+                break;
+        }
+        // console.log(`Successor state of action: ${action}`);
+        let successorNode = new Node(successorState, parentNode, action);
+        successorNode.print();
+        return successorNode;
     }
 
     // Get the valid actions from the given state
@@ -130,45 +169,6 @@ export default class VacuumWorld {
                 }
             }
         }
-    }
-
-    // Generate successor states
-    generateSuccessorNode(action, parentNode) {
-        let successorState = copy(parentNode.state);
-        let validActions = this.getValidActions(successorState);
-        if (validActions.indexOf(action) < 0) {
-            console.error(`Action: ${action} is illegal in the current state`);
-            return;
-        }
-        // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
-        // If the vacuum is in a dirty tile and it decides to clean, simply do -1
-        console.log(`Generating successor state for action: ${action}`);
-        let coordinates = this.getCoordinates(successorState);
-        switch (action) {
-            case 'MU':
-                successorState[coordinates.row][coordinates.col] -= 2;
-                successorState[coordinates.row - 1][coordinates.col] += 2;
-                break;
-            case 'MR':
-                successorState[coordinates.row][coordinates.col] -= 2;
-                successorState[coordinates.row][coordinates.col + 1] += 2;
-                break;
-            case 'MD':
-                successorState[coordinates.row][coordinates.col] -= 2;
-                successorState[coordinates.row + 1][coordinates.col] += 2;
-                break;
-            case 'ML':
-                successorState[coordinates.row][coordinates.col] -= 2;
-                successorState[coordinates.row][coordinates.col - 1] += 2;
-                break;
-            case 'C':
-                successorState[coordinates.row][coordinates.col] -= 1;
-                break;
-        }
-        // console.log(`Successor state of action: ${action}`);
-        let successorNode = new Node(successorState, parentNode, action);
-        successorNode.print();
-        return successorNode;
     }
 
     sendActionToVacuum(action) {
