@@ -6,3 +6,7 @@ gulp.task('build_dist', (callback) => {
 });
 
 gulp.task('build', ['build_js', 'build_sass', 'build_html']);
+
+gulp.task('watch', () => {
+    return gulp.watch('./src/**/*.*', ['build']);
+});
