@@ -1,6 +1,8 @@
 import BreadthFirstVacuum from './vacuum-world/breadth-first-vacuum';
+import DepthFirstVacuum from './vacuum-world/depth-first-vacuum';
 
 document.getElementById('startButton').addEventListener('click', () => {
-    let breadthFirstVacuum = new BreadthFirstVacuum(2, 2);
-    breadthFirstVacuum.run();
+    // let vacuum = new BreadthFirstVacuum(2, 2);
+    let vacuum = new DepthFirstVacuum(2, 2);
+    vacuum.run();
 });
