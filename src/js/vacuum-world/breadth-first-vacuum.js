@@ -25,7 +25,7 @@ export default class BreadthFirstVacuum extends Vacuum {
             });
             // Add the new states to the queue
             stateQueue = stateQueue.concat(newStates);
-            console.log(stateQueue);
+            console.log(`Queue Length: ${stateQueue.length}`);
             // Remove the last element from the queue
             currentNode = stateQueue.shift();
         }
