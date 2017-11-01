@@ -27,7 +27,7 @@ let removeElement = (array, element) => {
     });
 }
 
-let possibleActions = ['MU', 'ML', 'MD', 'MR', 'C'];
+let possibleActions = ['C', 'MU', 'ML', 'MD', 'MR'];
 
 export default class VacuumWorld {
     constructor(rows, columns) {
@@ -43,30 +43,34 @@ export default class VacuumWorld {
     }
 
     generate() {
+        let initialState = [];
         console.log(`Generating world with ${this.rows} rows and ${this.columns} columns`);
-        // for (let i = 0; i < this.rows; i++) {
-        //     // Generate an empty array to represent the row
-        //     this.currentState.push([]);
-        //     for (let j = 0; j < this.columns; j++) {
-        //         // Have a 33% chance of the tile generated being dirty
-        //         this.currentState[i].push();
-        //     }
-        // }
-        // Hardcoded initial state:
-        // TODO: generate it randomly
-        this.currentState = [
-            [1, 1],
-            [1, 3]
-        ];
-        // TODO: return it rather than set it
+        for (let i = 0; i < this.rows; i++) {
+            // Generate an empty array to represent the row
+            initialState.push([]);
+            for (let j = 0; j < this.columns; j++) {
+                // Have an 80% chance of the tile generated being dirty
+                let randomVal = Math.random();
+                initialState[i].push(randomVal < 0.80 ? 1 : 0);
+            }
+        }
+        // Place the vacuum down in a random position by doing +2
+        let randomRow = Math.floor(Math.random() * this.rows);
+        let randomCol = Math.floor(Math.random() * this.columns);
+        initialState[randomRow][randomCol] += 2;
+        // initialState = [
+        //     [1, 1],
+        //     [1, 3]
+        // ];
+        return initialState;
     }
 
     // Using a breadth first search method
     run() {
-        this.generate();
+        let initialState = this.generate();
         let stateQueue = [];
         // Create the initial node
-        let currentNode = new Node(this.currentState, null, null);
+        let currentNode = new Node(initialState, null, null);
         console.log('Initial state: ');
         currentNode.print();
         while (!this.goalReached(currentNode.state)) {
