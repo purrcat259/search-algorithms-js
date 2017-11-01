@@ -27,7 +27,7 @@ let removeElement = (array, element) => {
     });
 }
 
-let possibleActions = ['MU', 'ML', 'MD', 'MR', 'MD', 'C'];
+let possibleActions = ['MU', 'ML', 'MD', 'MR', 'C'];
 
 export default class VacuumWorld {
     constructor(rows, columns) {
@@ -58,99 +58,118 @@ export default class VacuumWorld {
             [1, 1],
             [1, 3]
         ];
-        // Set the current position
-        this.currentPosition.row = 1;
-        this.currentPosition.col = 1;
-        // Create the initial node
-        this.initialNode = new Node(copy(this.currentState), null, null);
-        this.currentNode = this.initialNode;
-        console.log('Initial state: ');
-        this.currentNode.print();
+        // TODO: return it rather than set it
     }
 
     // Using a breadth first search method
     run() {
         this.generate();
-        let depth = 0;
-        while (!this.goalReached()) {
-            depth += 1;
-            let validActions = this.getValidActions();
-            // Choose a valid action at random
-            let action = validActions[Math.floor(Math.random() * validActions.length)];
-            // Generate the successor
-            let successor = this.generateSuccessor(action);
-            // Move the vacuum to that new position
-            this.sendActionToVacuum(action);
-            this.currentNode = successor;
-            this.currentState = successor.state;
+        let stateQueue = [];
+        // Create the initial node
+        let currentNode = new Node(this.currentState, null, null);
+        console.log('Initial state: ');
+        currentNode.print();
+        while (!this.goalReached(currentNode.state)) {
+            let validActions = this.getValidActions(currentNode.state);
+            console.log('------------------------------------');
+            console.log('Current state: ');
+            currentNode.print();
+            console.log(`Current valid actions: ${validActions.join(', ')}`);
+            // For each of the valid actions, generate successors and add them to the queue
+            let newStates = [];
+            validActions.forEach((action) => {
+                // Generate the successor
+                let successorNode = this.generateSuccessorNode(action, currentNode);
+                newStates.push(successorNode);
+            });
+            // Add the new states to the queue
+            stateQueue = stateQueue.concat(newStates);
+            console.log(stateQueue);
+            // Remove the last element from the queue
+            currentNode = stateQueue.shift();
         }
         console.log('Final state:');
-        this.currentNode.print();
+        currentNode.print();
         console.log('Final path:');
-        this.currentNode.printPathToRoot();
-        console.log(`Final Search depth: ${depth}`);
+        currentNode.printPathToRoot();
     }
 
-    // Get the valid actions from the current state
-    getValidActions() {
+    // Get the valid actions from the given state
+    getValidActions(state) {
+        // Get the co-ordinates of the robot in the given state
+        let coordinates = this.getCoordinates(state);
         // Copy the possible actions array
         let currentPossibleActions = copy(possibleActions);
         // If the current position is at the edge, then we cannot move in a specific direction
-        if (this.currentPosition.row === 0) {
+        if (coordinates.row === 0) {
             currentPossibleActions = removeElement(currentPossibleActions, 'MU');
         }
-        if (this.currentPosition.row + 1 === this.rows) {
+        if (coordinates.row + 1 === this.rows) {
             currentPossibleActions = removeElement(currentPossibleActions, 'MD');
         }
-        if (this.currentPosition.col === 0) {
+        if (coordinates.col === 0) {
             currentPossibleActions = removeElement(currentPossibleActions, 'ML');
         }
-        if (this.currentPosition.col + 1 === this.columns) {
+        if (coordinates.col + 1 === this.columns) {
             currentPossibleActions = removeElement(currentPossibleActions, 'MR');
         }
         // Clean cannot occur in tiles with either state 0 (clean) or state 2 (clean with vacuum)
         // No need to check for state 0 since the vacuum can only clean its current tile
-        if (this.currentState[this.currentPosition.row][this.currentPosition.col] == 2) {
+        if (state[coordinates.row][coordinates.col] == 2) {
             currentPossibleActions = removeElement(currentPossibleActions, 'C');
         }
-        console.log(`Current valid actions: ${currentPossibleActions.toString()}`);
+        // console.log(`Current valid actions: ${currentPossibleActions.toString()}`);
         return currentPossibleActions;
     }
 
+    getCoordinates(state) {
+        for (let row = 0; row < this.rows; row++) {
+            for (let col = 0; col < this.columns; col++) {
+                if (state[row][col] > 1) {
+                    return {
+                        row: row,
+                        col: col
+                    };
+                }
+            }
+        }
+    }
+
     // Generate successor states
-    generateSuccessor(action) {
-        let validActions = this.getValidActions();
+    generateSuccessorNode(action, parentNode) {
+        let successorState = copy(parentNode.state);
+        let validActions = this.getValidActions(successorState);
         if (validActions.indexOf(action) < 0) {
-            console.log(`Action: ${action} is illegal in the current state`);
+            console.error(`Action: ${action} is illegal in the current state`);
             return;
         }
         // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
         // If the vacuum is in a dirty tile and it decides to clean, simply do -1
         console.log(`Generating successor state for action: ${action}`);
-        let successorState = copy(this.currentState);
+        let coordinates = this.getCoordinates(successorState);
         switch (action) {
             case 'MU':
-                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
-                successorState[this.currentPosition.row - 1][this.currentPosition.col] += 2;
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row - 1][coordinates.col] += 2;
                 break;
             case 'MR':
-                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
-                successorState[this.currentPosition.row][this.currentPosition.col + 1] += 2;
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row][coordinates.col + 1] += 2;
                 break;
             case 'MD':
-                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
-                successorState[this.currentPosition.row + 1][this.currentPosition.col] += 2;
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row + 1][coordinates.col] += 2;
                 break;
             case 'ML':
-                successorState[this.currentPosition.row][this.currentPosition.col] -= 2;
-                successorState[this.currentPosition.row][this.currentPosition.col - 1] += 2;
+                successorState[coordinates.row][coordinates.col] -= 2;
+                successorState[coordinates.row][coordinates.col - 1] += 2;
                 break;
             case 'C':
-                successorState[this.currentPosition.row][this.currentPosition.col] -= 1;
+                successorState[coordinates.row][coordinates.col] -= 1;
                 break;
         }
-        console.log(`Successor state of action: ${action}`);
-        let successorNode = new Node(successorState, this.currentNode, action);
+        // console.log(`Successor state of action: ${action}`);
+        let successorNode = new Node(successorState, parentNode, action);
         successorNode.print();
         return successorNode;
     }
@@ -181,16 +200,19 @@ export default class VacuumWorld {
         this.currentPosition.col = col;
     }
 
-    goalReached() {
+    goalReached(currentState) {
         // For the goal to be reached, all entries but one should be 2.
         // We can sum the values for all the entries in the state. If it is > 2 at any point then we stop checking
         let sum = 0;
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.columns; col++) {
-                sum += this.currentState[row][col];
+                sum += currentState[row][col];
                 if (sum > 2) {
                     break;
                 }
+            }
+            if (sum > 2) {
+                break;
             }
         }
         return sum === 2;

@@ -1,6 +1,6 @@
 export default class Node {
     constructor(state, parentNode, action) {
-        this.state = state;
+        this.state = JSON.parse(JSON.stringify(state));
         this.parentNode = parentNode;
         this.action = action;
     }
@@ -18,11 +18,17 @@ export default class Node {
     }
 
     printPathToRoot() {
-        console.log(this.action);
+        let route = [];
+        route.push(this.action);
         let parent = this.parentNode;
         while (parent) {
-            console.log(parent.action);
+            if (parent.action) {
+                route.push(parent.action);
+            }
             parent = parent.parentNode;
         }
+        route.reverse();
+        console.log(route.join('\n'));
+        console.log(`Depth: ${route.length}`);
     }
 }
