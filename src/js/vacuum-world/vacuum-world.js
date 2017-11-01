@@ -171,31 +171,32 @@ export default class VacuumWorld {
         }
     }
 
-    sendActionToVacuum(action) {
-        switch (action) {
-            case 'MU':
-                this.currentPosition.row -= 1;
-                break;
-            case 'MR':
-                this.currentPosition.col += 1;
-                break;
-            case 'MD':
-                this.currentPosition.row += 1;
-                break;
-            case 'ML':
-                this.currentPosition.col -= 1;
-                break;
-            case 'C':
-                this.currentState[this.currentPosition.row][this.currentPosition.col] -= 2;
-                break;
-        }
-        this.moveVacuum(this.currentPosition.row, this.currentPosition.col);
-    }
-
-    moveVacuum(row, col) {
-        this.currentPosition.row = row;
-        this.currentPosition.col = col;
-    }
+    // TODO: Move to a simulator class
+    // sendActionToVacuum(action) {
+    //     switch (action) {
+    //         case 'MU':
+    //             this.currentPosition.row -= 1;
+    //             break;
+    //         case 'MR':
+    //             this.currentPosition.col += 1;
+    //             break;
+    //         case 'MD':
+    //             this.currentPosition.row += 1;
+    //             break;
+    //         case 'ML':
+    //             this.currentPosition.col -= 1;
+    //             break;
+    //         case 'C':
+    //             this.currentState[this.currentPosition.row][this.currentPosition.col] -= 2;
+    //             break;
+    //     }
+    //     this.moveVacuum(this.currentPosition.row, this.currentPosition.col);
+    // }
+    //
+    // moveVacuum(row, col) {
+    //     this.currentPosition.row = row;
+    //     this.currentPosition.col = col;
+    // }
 
     goalReached(currentState) {
         // For the goal to be reached, all entries but one should be 2.
