@@ -1,6 +1,6 @@
-import VacuumWorld from './vacuum-world/vacuum-world';
+import BreadthFirstVacuum from './vacuum-world/breadth-first-vacuum';
 
 document.getElementById('startButton').addEventListener('click', () => {
-    let world = new VacuumWorld(3, 3);
-    world.run();
+    let breadthFirstVacuum = new BreadthFirstVacuum(2, 2);
+    breadthFirstVacuum.run();
 });

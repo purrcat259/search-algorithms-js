@@ -1,4 +1,4 @@
-import Node from './models/node';
+import SearchNode from './search-node';
 
 /*
 * State is a 2D array of integers which is represented using the following numbers:
@@ -29,44 +29,13 @@ let removeElement = (array, element) => {
 
 let possibleActions = ['C', 'MU', 'ML', 'MD', 'MR'];
 
-export default class VacuumWorld {
+export default class Vacuum {
     constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
     }
 
-    // Using a breadth first search method
-    run() {
-        let initialState = this.generate();
-        let stateQueue = [];
-        // Create the initial node
-        let currentNode = new Node(initialState, null, null);
-        console.log('Initial state: ');
-        currentNode.print();
-        while (!this.goalReached(currentNode.state)) {
-            let validActions = this.getValidActions(currentNode.state);
-            console.log('------------------------------------');
-            console.log('Current state: ');
-            currentNode.print();
-            console.log(`Current valid actions: ${validActions.join(', ')}`);
-            // For each of the valid actions, generate successors and add them to the queue
-            let newStates = [];
-            validActions.forEach((action) => {
-                // Generate the successor
-                let successorNode = this.generateSuccessorNode(action, currentNode);
-                newStates.push(successorNode);
-            });
-            // Add the new states to the queue
-            stateQueue = stateQueue.concat(newStates);
-            console.log(stateQueue);
-            // Remove the last element from the queue
-            currentNode = stateQueue.shift();
-        }
-        console.log('Final state:');
-        currentNode.print();
-        console.log('Final path:');
-        currentNode.printPathToRoot();
-    }
+    // run() {}
 
     generate() {
         let initialState = [];
@@ -125,7 +94,7 @@ export default class VacuumWorld {
                 break;
         }
         // console.log(`Successor state of action: ${action}`);
-        let successorNode = new Node(successorState, parentNode, action);
+        let successorNode = new SearchNode(successorState, parentNode, action);
         successorNode.print();
         return successorNode;
     }
