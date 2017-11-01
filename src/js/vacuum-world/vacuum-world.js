@@ -33,13 +33,6 @@ export default class VacuumWorld {
     constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
-        this.currentState = [];
-        this.initialNode = null;
-        this.currentNode = null;
-        this.currentPosition = {
-            row: -1,
-            col: -1
-        };
     }
 
     generate() {
