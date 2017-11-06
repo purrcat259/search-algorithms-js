@@ -5,7 +5,8 @@ export default class DepthLimitedVacuum extends Vacuum {
     // Using a breadth first search method
     run(depthLimit) {
         // Set a deafult if a limit is not passed
-        depthLimit = depthLimit || 10;
+        depthLimit = depthLimit || 3;
+        console.log(`Searching using limited depth of: ${depthLimit}`);
         let initialState = this.generate();
         let stateStack = [];
         // Create the initial node
