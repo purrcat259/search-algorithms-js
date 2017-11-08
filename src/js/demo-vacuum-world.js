@@ -27,15 +27,16 @@ document.getElementById('iterationButton').addEventListener('click', () => {
     // console.log(`Iteration: ${iteration}`);
     // console.log(vacuum.currentNode);
     // vacuum.currentNode.print();
-    // treeVis.draw();
+    treeVis.draw();
 });
 
 document.getElementById('runButton').addEventListener('click', () => {
     while (!vacuum.goalReached(vacuum.currentNode.state)) {
         vacuum.runIteration();
+        treeVis.draw();
     }
-    console.log('Final state:');
-    vacuum.currentNode.print();
-    console.log('Final path:');
+    // console.log('Final state:');
+    // vacuum.currentNode.print();
+    // console.log('Final path:');
     vacuum.currentNode.printPathToRoot();
 });

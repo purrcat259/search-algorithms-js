@@ -38,17 +38,19 @@ export default class BreadthFirstVacuum extends Vacuum {
         // console.log(`Current valid actions: ${validActions.join(', ')}`);
         // For each of the valid actions, generate successors and add them to the queue
         let newStates = [];
-        validActions.forEach((action) => {
+        for (let i = 0; i < validActions.length; i++) {
+            let action = validActions[i];
             // Generate the successor
             let successorNode = this.generateSuccessorNode(action, this.currentNode);
             newStates.push(successorNode);
-        });
+        }
         // Add the new states to the queue
         this.stateQueue = this.stateQueue.concat(newStates);
         // Set the new states as the children of the current node (for vis purposes)
-        newStates.forEach((node) => {
+        for (let i = 0; i < newStates.length; i++) {
+            let node = newStates[i];
             this.currentNode.addChild(node);
-        });
+        }
         console.log(`Queue Length: ${this.stateQueue.length}`);
         // Remove the last element from the queue
         this.currentNode = this.stateQueue.shift();
