@@ -70,7 +70,7 @@ export default class Vacuum {
         }
         // When vacuum enters a tile, do +2 to the new tile and -2 to the old tile. This preserves the clean/dirty state of either tile
         // If the vacuum is in a dirty tile and it decides to clean, simply do -1
-        console.log(`Generating successor state for action: ${action}`);
+        // console.log(`Generating successor state for action: ${action}`);
         let coordinates = this.getCoordinates(successorState);
         switch (action) {
             case 'MU':

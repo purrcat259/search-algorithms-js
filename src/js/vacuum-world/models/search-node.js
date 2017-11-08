@@ -2,7 +2,12 @@ export default class SearchNode {
     constructor(state, parentNode, action) {
         this.state = JSON.parse(JSON.stringify(state));
         this.parentNode = parentNode;
+        this.childNodes = [];
         this.action = action;
+    }
+
+    addChild(child) {
+        this.childNodes.push(child);
     }
 
     print() {
