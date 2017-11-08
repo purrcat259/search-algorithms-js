@@ -32,6 +32,7 @@ document.getElementById('iterationButton').addEventListener('click', () => {
 
 document.getElementById('runButton').addEventListener('click', () => {
     while (!vacuum.goalReached(vacuum.currentNode.state)) {
+        iteration += 1;
         vacuum.runIteration();
         treeVis.draw();
     }

@@ -39,13 +39,13 @@ export default class TreeVisualisation {
             },
             layout: {
                 hierarchical: {
-                    direction: 'Up-Down'
+                    direction: 'UD'
                     // direction: directionInput.value
                 }
             },
             physics: false
         }
-        network = new vis.Network(container, data, options);
+        this.network = new vis.Network(container, data, options);
     }
 
     extractAllNodes(items, result) {
