@@ -20,11 +20,22 @@ document.getElementById('initButton').addEventListener('click', () => {
 
 document.getElementById('iterationButton').addEventListener('click', () => {
     iteration += 1;
-    console.log('------------------------------------');
-    console.log('State:');
-    vacuum.currentNode.print();
-    console.log(`Iteration: ${iteration}`);
+    // console.log('------------------------------------');
+    // console.log('State:');
+    // vacuum.currentNode.print();
     vacuum.runIteration();
-    console.log(vacuum.currentNode);
+    // console.log(`Iteration: ${iteration}`);
+    // console.log(vacuum.currentNode);
+    // vacuum.currentNode.print();
+    // treeVis.draw();
+});
+
+document.getElementById('runButton').addEventListener('click', () => {
+    while (!vacuum.goalReached(vacuum.currentNode.state)) {
+        vacuum.runIteration();
+    }
+    console.log('Final state:');
     vacuum.currentNode.print();
+    console.log('Final path:');
+    vacuum.currentNode.printPathToRoot();
 });

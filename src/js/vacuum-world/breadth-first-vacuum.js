@@ -16,19 +16,19 @@ export default class BreadthFirstVacuum extends Vacuum {
         this.currentNode = new SearchNode(this.initialState, null, null);
         console.log('Initial state: ');
         this.currentNode.print();
-        this.root = this.currentNode; // TODO check if this works since current node is reassigned
+        this.root = this.currentNode;
     }
 
     // Using a breadth first search method
-    run() {
-        while (!this.goalReached(this.currentNode.state)) {
-            this.runIteration();
-        }
-        console.log('Final state:');
-        this.currentNode.print();
-        console.log('Final path:');
-        this.currentNode.printPathToRoot();
-    }
+    // run() {
+    //     while (!this.goalReached(this.currentNode.state)) {
+    //         this.runIteration();
+    //     }
+    //     console.log('Final state:');
+    //     this.currentNode.print();
+    //     console.log('Final path:');
+    //     this.currentNode.printPathToRoot();
+    // }
 
     runIteration() {
         let validActions = this.getValidActions(this.currentNode.state);
