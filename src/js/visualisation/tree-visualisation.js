@@ -6,10 +6,11 @@ export default class TreeVisualisation {
         this.nodes = null;
         this.edges = null;
         this.network = null;
+        this.routeIds = [];
     }
 
-    draw() {
-        this.destroy();
+    draw(currentNode) {
+        // this.destroy();
         this.nodes = [];
         this.edges = [];
         // Add all the nodes from the root into this.nodes
@@ -17,7 +18,31 @@ export default class TreeVisualisation {
         // TODO: Convert to graph representation, with ID, Label and Level
         for (let i = 0; i < treeNodes.length; i++) {
             let node = treeNodes[i];
-            this.nodes.push({id: node.id, label: node.stateString(), level: node.level});
+            let treeNode = {
+                id: node.id,
+                label: node.stateString(),
+                level: node.level
+            };
+            // Draw the current node, if available
+            if (currentNode) {
+                if (treeNode.id === currentNode.id) {
+                    treeNode.color = 'lime';
+                }
+            }
+            this.nodes.push(treeNode);
+        }
+        // If the route IDs are available, change the colours of the nodes
+        if (this.routeIds && this.routeIds.length) {
+            // Add the route node id if it is not present
+            if (this.routeIds.indexOf(this.root.id) === -1) {
+                this.routeIds.push(this.root.id);
+            }
+            for (let i = 0; i < this.nodes.length; i++) {
+                let node = this.nodes[i];
+                if (this.routeIds.indexOf(node.id) !== -1) {
+                    node.color = 'red';
+                }
+            }
         }
         // console.log(this.nodes);
         this.edges = this.generateEdges([this.root], []);
@@ -32,20 +57,34 @@ export default class TreeVisualisation {
             edges: {
                 smooth: {
                     type: 'cubicBezier',
-                    // forceDirection: (directionInput.value == "UD" || directionInput.value == "DU") ? 'vertical' : 'horizontal',
-                        // roundness: 0.4
-                    // }
+                    forceDirection: 'vertical',
+                    roundness: 0.4
                 }
             },
             layout: {
                 hierarchical: {
                     direction: 'UD'
-                    // direction: directionInput.value
                 }
             },
-            physics: false
+            physics: false,
+            manipulation: {
+                addNode: (nodeData, callback) => {
+                    nodeData.label = 'hello world';
+                    callback(nodeData);
+                }
+            }
         }
         this.network = new vis.Network(container, data, options);
+    }
+
+    highlightPathToRoute(route) {
+        let routeIds = [];
+        for (let i = 0; i < route.length; i++) {
+            routeIds.push(route[i].id);
+        }
+        this.routeIds = routeIds;
+        console.log('Highlighting Route');
+        this.draw();
     }
 
     extractAllNodes(items, result) {

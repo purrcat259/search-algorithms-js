@@ -38,18 +38,34 @@ export default class SearchNode {
         console.log(`Action: ${this.action}`);
     }
 
-    printPathToRoot() {
+    getPathToRoot() {
         let route = [];
-        route.push(`[${this.level}]: ${this.action}`);
+        route.push({
+            level: this.level,
+            action: this.action,
+            id: this.id
+        });
         let parent = this.parentNode;
         while (parent) {
             if (parent.action) {
-                route.push(`[${parent.level}]: ${parent.action}`);
+                route.push({
+                    level: parent.level,
+                    action: parent.action,
+                    id: parent.id
+                });
             }
             parent = parent.parentNode;
         }
         route.reverse();
-        console.log(route.join('\n'));
+        return route;
+    }
+
+    printPathToRoot() {
+        let route = this.getPathToRoot();
+        for (let i = 0; i < route.length; i++) {
+            let node = route[i];
+            console.log(`[${node.level}] ${node.action}`);
+        }
         console.log(`Depth: ${route.length}`);
     }
 }
