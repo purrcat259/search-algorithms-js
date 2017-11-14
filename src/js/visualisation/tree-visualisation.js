@@ -3,10 +3,10 @@ import vis from 'vis';
 export default class TreeVisualisation {
     constructor(root) {
         this.root = root;
-        this.nodes = null;
-        this.edges = null;
-        this.network = null;
+        this.nodes = [];
+        this.edges = [];
         this.routeIds = [];
+        this.network = null;
     }
 
     draw(currentNode) {
@@ -47,10 +47,43 @@ export default class TreeVisualisation {
         // console.log(this.nodes);
         this.edges = this.generateEdges([this.root], []);
         // console.log(edges);
+        this.drawNetwork(this.nodes, this.edges);
+    }
+
+    drawIterative(node) {
+        // this.destroy();
+        if (node) {
+            // convert the node to the representation required for the graph
+            let treeNode = {
+                id: node.id,
+                label: node.stateString(),
+                level: node.level,
+                color: 'lime'
+            };
+            this.nodes.push(treeNode);
+            // Change the colour of the previous node back to blue
+            if (this.nodes.length >= 2) {
+                this.nodes[this.nodes.length - 2].color = 'blue';
+            }
+            if (node.parentNode) {
+                this.edges.push(
+                    {
+                        from: node.parentNode.id,
+                        to: node.id,
+                        label: node.action,
+                        font: {align: 'bottom'}
+                    }
+                );
+            }
+            this.drawNetwork(this.nodes, this.edges);
+        }
+    }
+
+    drawNetwork(nodes, edges) {
         let container = document.getElementById('networkVis');
         let data = {
-            nodes: this.nodes,
-            edges: this.edges
+            nodes: nodes,
+            edges: edges
         };
 
         let options = {
@@ -66,13 +99,7 @@ export default class TreeVisualisation {
                     direction: 'UD'
                 }
             },
-            physics: false,
-            manipulation: {
-                addNode: (nodeData, callback) => {
-                    nodeData.label = 'hello world';
-                    callback(nodeData);
-                }
-            }
+            physics: false
         }
         this.network = new vis.Network(container, data, options);
     }

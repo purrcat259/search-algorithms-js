@@ -20,6 +20,7 @@ document.getElementById('initButton').addEventListener('click', () => {
     updateStateQueueCount(0);
     // Init creates the parent node we need for tree visualisation
     treeVis = new TreeVisualisation(vacuum.root);
+    treeVis.drawIterative(vacuum.root);
     // let vacuum = new DepthFirstVacuum(2, 2);
     // let vacuum = new DepthLimitedVacuum(2, 2);
     // vacuum.run(1);
@@ -35,14 +36,14 @@ document.getElementById('iterationButton').addEventListener('click', () => {
     // console.log(`Iteration: ${iteration}`);
     // console.log(vacuum.currentNode);
     // vacuum.currentNode.print();
-    treeVis.draw(vacuum.currentNode);
+    treeVis.drawIterative(vacuum.currentNode);
 });
 
 document.getElementById('startButton').addEventListener('click', () => {
     vacuumRunning = setInterval(() => {
         iteration += 1;
         vacuum.runIteration();
-        treeVis.draw(vacuum.currentNode);
+        treeVis.drawIterative(vacuum.currentNode);
         updateStateQueueCount(vacuum.stateQueue.length);
         if (vacuum.goalReached(vacuum.currentNode.state)) {
             clearInterval(vacuumRunning);
