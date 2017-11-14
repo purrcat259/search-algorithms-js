@@ -21,6 +21,7 @@ export default class SearchNode {
             for (let j = 0; j < this.state[0].length; j++) {
                 rowString = `${rowString} | ${this.state[i][j]}`;
             }
+            rowString = `${rowString} |`;
             stateStr = `${stateStr}\n${rowString}`;
         }
         return stateStr;
