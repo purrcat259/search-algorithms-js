@@ -59,6 +59,6 @@ document.getElementById('stopButton').addEventListener('click', () => {
     if (vacuumRunning) {
         clearInterval(vacuumRunning);
         console.log('Stopped');
-        treeVis.draw(vacuum.currentNode);
+        treeVis.drawIterative();
     }
 });
