@@ -6,6 +6,8 @@ import TreeVisualisation from './visualisation/tree-visualisation';
 
 let vacuum;
 let treeVis;
+let rows = 3;  // TODO: Add inputs to change these numbers
+let columns = 3;
 let intervalMs = 50;
 let iteration = 0;
 let vacuumRunning = null;
@@ -15,6 +17,8 @@ const updateStateQueueCount = (count) => {
 };
 
 const drawResultantPath = (route) => {
+    // Clear any old paths
+    document.getElementById('pathResult').innerHTML = '';
     for (let i = 0; i < route.length; i++) {
         let node = route[i];
         let nodeEl = document.createElement('span');
@@ -24,7 +28,7 @@ const drawResultantPath = (route) => {
 };
 
 document.getElementById('initButton').addEventListener('click', () => {
-    vacuum = new BreadthFirstVacuum(2, 2);
+    vacuum = new BreadthFirstVacuum(rows, columns);
     vacuum.init();
     updateStateQueueCount(0);
     // Init creates the parent node we need for tree visualisation
