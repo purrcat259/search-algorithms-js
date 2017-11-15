@@ -34,9 +34,7 @@ export default class SearchNode {
                 rowString = `${rowString} | ${this.state[i][j]}`;
             }
             rowString = `${rowString} |`;
-            console.log(rowString);
         }
-        console.log(`Action: ${this.action}`);
     }
 
     getPathToRoot() {
