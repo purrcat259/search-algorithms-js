@@ -6,8 +6,8 @@ import TreeVisualisation from './visualisation/tree-visualisation';
 
 let vacuum;
 let treeVis;
-let rows = 3;  // TODO: Add inputs to change these numbers
-let columns = 3;
+let rows = 2;  // TODO: Add inputs to change these numbers
+let columns = 2;
 let intervalMs = 50;
 let iteration = 0;
 let vacuumRunning = null;
