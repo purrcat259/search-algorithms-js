@@ -21,21 +21,12 @@ document.getElementById('initButton').addEventListener('click', () => {
     // Init creates the parent node we need for tree visualisation
     treeVis = new TreeVisualisation(vacuum.root);
     treeVis.drawIterative(vacuum.root);
-    // let vacuum = new DepthFirstVacuum(2, 2);
-    // let vacuum = new DepthLimitedVacuum(2, 2);
-    // vacuum.run(1);
 });
 
 document.getElementById('iterationButton').addEventListener('click', () => {
     iteration += 1;
-    // console.log('------------------------------------');
-    // console.log('State:');
-    // vacuum.currentNode.print();
     vacuum.runIteration();
     updateStateQueueCount(vacuum.stateQueue.length);
-    // console.log(`Iteration: ${iteration}`);
-    // console.log(vacuum.currentNode);
-    // vacuum.currentNode.print();
     treeVis.drawIterative(vacuum.currentNode);
 });
 
