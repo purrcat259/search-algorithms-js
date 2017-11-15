@@ -27,8 +27,24 @@ const drawResultantPath = (route) => {
     }
 };
 
+const initialiseVacuumWorld = () => {
+    let searchSelect = document.getElementById('searchSelect');
+    let chosenType = searchSelect.options[searchSelect.selectedIndex].value;
+    switch (chosenType) {
+        case 'bfs':
+            vacuum = new BreadthFirstVacuum(rows, columns);
+            break;
+        case 'dfs':
+            console.log('TODO');
+            break;
+        case 'dls':
+            console.log('TODO');
+            break;
+    }
+};
+
 document.getElementById('initButton').addEventListener('click', () => {
-    vacuum = new BreadthFirstVacuum(rows, columns);
+    initialiseVacuumWorld();
     vacuum.init();
     updateStateQueueCount(0);
     // Init creates the parent node we need for tree visualisation
