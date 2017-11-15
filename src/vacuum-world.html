@@ -4,6 +4,7 @@
     </head>
     <body>
         <h1>Vacuum World</h1>
+        <noscript>JavaScript is required to display the vacuum world</noscript>
         <select>
             <option value="bfs">Breadth First Search</option>
             <option value="dfs" disabled>Depth First Search</option>
@@ -23,8 +24,11 @@
         </button>
         <div>
             <p>Queue Length: <span id="queueCount"></span></p>
-            <div id="pathResult">
+            <div>
                 <p>Path Result: </p>
+                <div id="pathResult">
+
+                </div>
             </div>
         </div>
         <div id="networkVis"></div>
