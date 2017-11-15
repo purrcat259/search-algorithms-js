@@ -14,10 +14,12 @@ const fuse = FuseBox.init({
     sourceMaps: true,
     target: 'browser',
     plugins: [
-        WebIndexPlugin(),
+        WebIndexPlugin({
+            template: './src/vacuum-world.html'
+        }),
         [SassPlugin(), CSSPlugin()],
         BabelPlugin({
-            limit2project: false
+            // limit2project: false
         })
     ]
 });
@@ -26,5 +28,7 @@ fuse.bundle('client/app')
     .watch('src/js/**')
     .hmr({reload : true})
     .instructions('> js/demo-vacuum-world.js');
+
+fuse.dev();
 
 fuse.run();

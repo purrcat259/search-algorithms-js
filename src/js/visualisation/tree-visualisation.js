@@ -1,4 +1,4 @@
-import vis from 'vis';
+import * as vis from 'vis';
 
 export default class TreeVisualisation {
     constructor(root) {
