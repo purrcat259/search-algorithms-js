@@ -12,7 +12,16 @@ let vacuumRunning = null;
 
 const updateStateQueueCount = (count) => {
     document.getElementById('queueCount').innerText = count;
-}
+};
+
+const drawResultantPath = (route) => {
+    for (let i = 0; i < route.length; i++) {
+        let node = route[i];
+        let nodeEl = document.createElement('span');
+        nodeEl.innerText = `[${i}] ${node.action} `;
+        document.getElementById('pathResult').appendChild(nodeEl);
+    }
+};
 
 document.getElementById('initButton').addEventListener('click', () => {
     vacuum = new BreadthFirstVacuum(2, 2);
@@ -42,6 +51,7 @@ document.getElementById('startButton').addEventListener('click', () => {
             treeVis.draw();
             vacuum.currentNode.printPathToRoot();
             treeVis.highlightPathToRoute(vacuum.currentNode.getPathToRoot());
+            drawResultantPath(vacuum.currentNode.getPathToRoot());
         }
     }, intervalMs);
 });
