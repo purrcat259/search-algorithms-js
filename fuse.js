@@ -27,7 +27,7 @@ const fuse = FuseBox.init({
 fuse.bundle('client/app')
     .watch('src/js/**')
     .hmr({reload : true})
-    .instructions('> js/demo-vacuum-world.js');
+    .instructions('> js/demo.js');
 
 fuse.dev();
 

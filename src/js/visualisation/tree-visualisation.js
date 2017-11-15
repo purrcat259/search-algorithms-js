@@ -15,7 +15,6 @@ export default class TreeVisualisation {
         this.edges = [];
         // Add all the nodes from the root into this.nodes
         let treeNodes = this.extractAllNodes([this.root], []);
-        // TODO: Convert to graph representation, with ID, Label and Level
         for (let i = 0; i < treeNodes.length; i++) {
             let node = treeNodes[i];
             let treeNode = {
@@ -75,8 +74,8 @@ export default class TreeVisualisation {
                     }
                 );
             }
-            this.drawNetwork(this.nodes, this.edges);
         }
+        this.drawNetwork(this.nodes, this.edges);
     }
 
     drawNetwork(nodes, edges) {
