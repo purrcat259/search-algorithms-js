@@ -4,17 +4,7 @@ import SearchNode from './models/search-node';
 export default class BreadthFirstVacuum extends Vacuum {
     constructor(rows, columns) {
         super(rows, columns);
-        this.initalState = null;
         this.stateQueue = [];
-        this.currentNode = null;
-        this.root = null;
-    }
-
-    init() {
-        this.initialState = this.generate();
-        // Create the initial node
-        this.currentNode = new SearchNode(this.initialState, null, null);
-        this.root = this.currentNode;
     }
 
     runIteration() {

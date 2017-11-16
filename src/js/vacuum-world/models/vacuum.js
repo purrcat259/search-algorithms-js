@@ -33,9 +33,18 @@ export default class Vacuum {
     constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
+        this.initalState = null;
+        this.currentNode = null;
+        this.root = null;
     }
 
-    // run() {}
+
+    init() {
+        this.initialState = this.generate();
+        // Create the initial node
+        this.currentNode = new SearchNode(this.initialState, null, null);
+        this.root = this.currentNode;
+    }
 
     generate() {
         let initialState = [];
