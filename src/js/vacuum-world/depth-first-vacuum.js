@@ -1,37 +1,38 @@
 import Vacuum from './models/vacuum';
 import SearchNode from './models/search-node';
 
+// Clean has been moved to the end since actions are stacked, not queued
+const depthFirstPossibleActions = ['MU', 'ML', 'MD', 'MR', 'C'];
+
 export default class DepthFirstVacuum extends Vacuum {
-    // Using a breadth first search method
-    run() {
-        let initialState = this.generate();
-        let stateStack = [];
-        // Create the initial node
-        let currentNode = new SearchNode(initialState, null, null);
-        console.log('Initial state: ');
-        currentNode.print();
-        while (!this.goalReached(currentNode.state)) {
-            let validActions = this.getValidActions(currentNode.state);
-            console.log('------------------------------------');
-            console.log('Current state: ');
-            currentNode.print();
-            console.log(`Current valid actions: ${validActions.join(', ')}`);
-            // For each of the valid actions, generate successors and add them to the queue
-            let newStates = [];
-            validActions.forEach((action) => {
-                // Generate the successor
-                let successorNode = this.generateSuccessorNode(action, currentNode);
-                newStates.push(successorNode);
-            });
-            // Add the new states to the queue
-            stateStack = stateStack.concat(newStates);
-            console.log(`Stack Size: ${stateStack.length}`);
-            // Remove the top element from the stack
-            currentNode = stateStack.pop();
-        }
-        console.log('Final state:');
-        currentNode.print();
-        console.log('Final path:');
-        currentNode.printPathToRoot();
+    constructor(rows, columns) {
+        super(rows, columns);
+        this.stateStack = [];
     }
-}
+
+    runIteration() {
+        let validActions = this.getValidActions(this.currentNode.state);
+        // For each of the valid actions, generate successors and add them to the queue
+        let newStates = [];
+        for (let i = 0; i < validActions.length; i++) {
+            let action = validActions[i];
+            // Generate the successor
+            let successorNode = this.generateSuccessorNode(action, this.currentNode);
+            newStates.push(successorNode);
+        }
+        // Add the new states to the queue
+        this.stateStack = this.stateStack.concat(newStates);
+        // Set the new states as the children of the current node (for vis purposes)
+        for (let i = 0; i < newStates.length; i++) {
+            let node = newStates[i];
+            this.currentNode.addChild(node);
+        }
+        // Remove the last element from the queue
+        this.currentNode = this.stateStack.pop();
+    }
+
+    // Override with new possible actions list
+    getValidActions(state) {
+        return super.getValidActions(state, depthFirstPossibleActions);
+    }
+ }

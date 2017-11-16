@@ -27,7 +27,7 @@ let removeElement = (array, element) => {
     });
 }
 
-let possibleActions = ['C', 'MU', 'ML', 'MD', 'MR'];
+let defaultPossibleActions = ['C', 'MU', 'ML', 'MD', 'MR'];
 
 export default class Vacuum {
     constructor(rows, columns) {
@@ -109,7 +109,8 @@ export default class Vacuum {
     }
 
     // Get the valid actions from the given state
-    getValidActions(state) {
+    getValidActions(state, possibleActions) {
+        possibleActions = possibleActions || defaultPossibleActions;
         // Get the co-ordinates of the robot in the given state
         let coordinates = this.getCoordinates(state);
         // Copy the possible actions array

@@ -35,7 +35,7 @@ const initialiseVacuumWorld = () => {
             vacuum = new BreadthFirstVacuum(rows, columns);
             break;
         case 'dfs':
-            console.log('TODO');
+            vacuum = new DepthFirstVacuum(rows, columns);
             break;
         case 'dls':
             console.log('TODO');
@@ -46,7 +46,7 @@ const initialiseVacuumWorld = () => {
 document.getElementById('initButton').addEventListener('click', () => {
     initialiseVacuumWorld();
     vacuum.init();
-    updateStateQueueCount(0);
+    // updateStateQueueCount(0); // TODO: Generalise
     // Init creates the parent node we need for tree visualisation
     treeVis = new TreeVisualisation(vacuum.root);
     treeVis.drawIterative(vacuum.root);
@@ -55,7 +55,7 @@ document.getElementById('initButton').addEventListener('click', () => {
 document.getElementById('iterationButton').addEventListener('click', () => {
     iteration += 1;
     vacuum.runIteration();
-    updateStateQueueCount(vacuum.stateQueue.length);
+    // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
     treeVis.drawIterative(vacuum.currentNode);
 });
 
@@ -64,7 +64,7 @@ document.getElementById('startButton').addEventListener('click', () => {
         iteration += 1;
         vacuum.runIteration();
         treeVis.drawIterative(vacuum.currentNode);
-        updateStateQueueCount(vacuum.stateQueue.length);
+        // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
         if (vacuum.goalReached(vacuum.currentNode.state)) {
             clearInterval(vacuumRunning);
             console.log('Done!');
