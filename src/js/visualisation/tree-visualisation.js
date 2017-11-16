@@ -10,7 +10,6 @@ export default class TreeVisualisation {
     }
 
     draw(currentNode) {
-        // this.destroy();
         this.nodes = [];
         this.edges = [];
         // Add all the nodes from the root into this.nodes
@@ -46,6 +45,7 @@ export default class TreeVisualisation {
         // console.log(this.nodes);
         this.edges = this.generateEdges([this.root], []);
         // console.log(edges);
+        // this.destroy();
         this.drawNetwork(this.nodes, this.edges);
     }
 
@@ -101,15 +101,22 @@ export default class TreeVisualisation {
             physics: false
         }
         this.network = new vis.Network(container, data, options);
+        this.network.fit();
     }
 
     highlightPathToRoute(route) {
-        let routeIds = [];
-        for (let i = 0; i < route.length; i++) {
-            routeIds.push(route[i].id);
+        if (!route) {
+            for (let i = 0; i < this.nodes.length; i++) {
+                this.nodes[i].color = 'red';
+            }
+        } else {
+            let routeIds = [];
+            for (let i = 0; i < route.length; i++) {
+                routeIds.push(route[i].id);
+            }
+            this.routeIds = routeIds;
+            console.log('Highlighting Route');
         }
-        this.routeIds = routeIds;
-        console.log('Highlighting Route');
         this.draw();
     }
 

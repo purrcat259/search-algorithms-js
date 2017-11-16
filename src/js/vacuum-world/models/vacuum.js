@@ -150,13 +150,18 @@ export default class Vacuum {
         }
     }
 
-    goalReached(currentState) {
+    goalReached() {
+        // If there is no current node, then there is no possible path
+        if (!this.currentNode) {
+            return true;
+        }
+        let state = this.currentNode.state;
         // For the goal to be reached, all entries but one should be 2.
         // We can sum the values for all the entries in the state. If it is > 2 at any point then we stop checking
         let sum = 0;
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.columns; col++) {
-                sum += currentState[row][col];
+                sum += state[row][col];
                 if (sum > 2) {
                     break;
                 }

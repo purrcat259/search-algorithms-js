@@ -19,11 +19,17 @@ const updateStateQueueCount = (count) => {
 const drawResultantPath = (route) => {
     // Clear any old paths
     document.getElementById('pathResult').innerHTML = '';
-    for (let i = 0; i < route.length; i++) {
-        let node = route[i];
+    if (!route) {
         let nodeEl = document.createElement('span');
-        nodeEl.innerText = `[${i}] ${node.action} `;
+        nodeEl.innerText = 'NO PATH FOUND';
         document.getElementById('pathResult').appendChild(nodeEl);
+    } else {
+        for (let i = 0; i < route.length; i++) {
+            let node = route[i];
+            let nodeEl = document.createElement('span');
+            nodeEl.innerText = `[${i}] ${node.action} `;
+            document.getElementById('pathResult').appendChild(nodeEl);
+        }
     }
 };
 
@@ -61,18 +67,23 @@ document.getElementById('iterationButton').addEventListener('click', () => {
 
 document.getElementById('startButton').addEventListener('click', () => {
     vacuumRunning = setInterval(() => {
+        if (vacuum.goalReached()) {
+            clearInterval(vacuumRunning);
+            console.log('Search Complete!');
+            treeVis.draw();
+            if (vacuum.currentNode) {
+                vacuum.currentNode.printPathToRoot();
+                treeVis.highlightPathToRoute(vacuum.currentNode.getPathToRoot());
+                drawResultantPath(vacuum.currentNode.getPathToRoot());
+            } else {
+                treeVis.highlightPathToRoute(null);
+                drawResultantPath(null);
+            }
+        }
         iteration += 1;
         vacuum.runIteration();
         treeVis.drawIterative(vacuum.currentNode);
         // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
-        if (vacuum.goalReached(vacuum.currentNode.state)) {
-            clearInterval(vacuumRunning);
-            console.log('Done!');
-            treeVis.draw();
-            vacuum.currentNode.printPathToRoot();
-            treeVis.highlightPathToRoute(vacuum.currentNode.getPathToRoot());
-            drawResultantPath(vacuum.currentNode.getPathToRoot());
-        }
     }, intervalMs);
 });
 

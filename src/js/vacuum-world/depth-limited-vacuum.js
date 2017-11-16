@@ -9,13 +9,10 @@ export default class DepthLimited extends Vacuum {
     constructor(rows, columns) {
         super(rows, columns);
         this.stateStack = [];
-        this.noPath = false;
     }
 
     runIteration() {
-        if (!this.currentNode) {
-            // No more successors available
-            this.noPath = true;
+        if (this.goalReached()) {
             return;
         }
         let validActions = this.getValidActions(this.currentNode.state);
@@ -44,10 +41,5 @@ export default class DepthLimited extends Vacuum {
     // Override with new possible actions list
     getValidActions(state) {
         return super.getValidActions(state, depthFirstPossibleActions);
-    }
-
-    // Override to consider no path being found
-    goalReached(currentState) {
-        return this.noPath || super.goalReached(currentState);
     }
  }
