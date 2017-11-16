@@ -38,7 +38,7 @@ const initialiseVacuumWorld = () => {
             vacuum = new DepthFirstVacuum(rows, columns);
             break;
         case 'dls':
-            console.log('TODO');
+            vacuum = new DepthLimitedVacuum(rows, columns);
             break;
     }
 };
