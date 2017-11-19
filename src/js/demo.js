@@ -67,17 +67,17 @@ document.getElementById('iterationButton').addEventListener('click', () => {
 
 document.getElementById('startButton').addEventListener('click', () => {
     vacuumRunning = setInterval(() => {
-        if (vacuum.goalReached()) {
+        if (!vacuum.canContinue()) {
             clearInterval(vacuumRunning);
-            console.log('Search Complete!');
             treeVis.draw();
-            if (vacuum.currentNode) {
-                vacuum.currentNode.printPathToRoot();
+            if (vacuum.goalReached()) {
+                console.log('Search Complete!');
                 treeVis.highlightPathToRoute(vacuum.currentNode.getPathToRoot());
                 drawResultantPath(vacuum.currentNode.getPathToRoot());
-            } else {
-                treeVis.highlightPathToRoute(null);
+            } else if (vacuum.noPathFound()) {
+                console.log('No path found');
                 drawResultantPath(null);
+                treeVis.showNoPathFound();
             }
         }
         iteration += 1;

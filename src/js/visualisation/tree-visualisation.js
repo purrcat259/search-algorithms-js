@@ -105,18 +105,21 @@ export default class TreeVisualisation {
     }
 
     highlightPathToRoute(route) {
-        if (!route) {
-            for (let i = 0; i < this.nodes.length; i++) {
-                this.nodes[i].color = 'red';
-            }
-        } else {
-            let routeIds = [];
-            for (let i = 0; i < route.length; i++) {
-                routeIds.push(route[i].id);
-            }
-            this.routeIds = routeIds;
-            console.log('Highlighting Route');
+        let routeIds = [];
+        for (let i = 0; i < route.length; i++) {
+            routeIds.push(route[i].id);
         }
+        this.routeIds = routeIds;
+        console.log('Highlighting Route');
+        this.draw();
+    }
+
+    showNoPathFound() {
+        for (let i = 0; i < this.nodes.length; i++) {
+            this.nodes[i].color = 'red';
+        }
+        // TODO: this.nodes is rewritten after .draw()
+        console.log('Showing no path found');
         this.draw();
     }
 

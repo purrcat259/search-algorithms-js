@@ -3,7 +3,7 @@ import SearchNode from './models/search-node';
 
 // Clean has been moved to the end since actions are stacked, not queued
 const depthFirstPossibleActions = ['MU', 'ML', 'MD', 'MR', 'C'];
-const depthLimit = 5;
+const depthLimit = 3;
 
 export default class DepthLimited extends Vacuum {
     constructor(rows, columns) {
@@ -12,7 +12,7 @@ export default class DepthLimited extends Vacuum {
     }
 
     runIteration() {
-        if (this.goalReached()) {
+        if (!this.canContinue()) {
             return;
         }
         let validActions = this.getValidActions(this.currentNode.state);

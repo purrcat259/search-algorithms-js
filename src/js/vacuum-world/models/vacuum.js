@@ -150,10 +150,13 @@ export default class Vacuum {
         }
     }
 
+    canContinue() {
+        return !this.goalReached() && !this.noPathFound();
+    }
+
     goalReached() {
-        // If there is no current node, then there is no possible path
         if (!this.currentNode) {
-            return true;
+            return;
         }
         let state = this.currentNode.state;
         // For the goal to be reached, all entries but one should be 2.
@@ -171,5 +174,9 @@ export default class Vacuum {
             }
         }
         return sum === 2;
+    }
+
+    noPathFound() {
+        return !this.currentNode;
     }
 }
