@@ -79,11 +79,12 @@ document.getElementById('startButton').addEventListener('click', () => {
                 drawResultantPath(null);
                 treeVis.showNoPathFound();
             }
+        } else {
+            iteration += 1;
+            vacuum.runIteration();
+            treeVis.drawIterative(vacuum.currentNode);
+            // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
         }
-        iteration += 1;
-        vacuum.runIteration();
-        treeVis.drawIterative(vacuum.currentNode);
-        // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
     }, intervalMs);
 });
 
