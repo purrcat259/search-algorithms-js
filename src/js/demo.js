@@ -1,6 +1,7 @@
 import BreadthFirstVacuum from './vacuum-world/breadth-first-vacuum';
 import DepthFirstVacuum from './vacuum-world/depth-first-vacuum';
 import DepthLimitedVacuum from './vacuum-world/depth-limited-vacuum';
+import IterativeDepthLimitedVacuum from './vacuum-world/iterative-depth-limited-vacuum';
 
 import TreeVisualisation from './visualisation/tree-visualisation';
 
@@ -45,6 +46,9 @@ const initialiseVacuumWorld = () => {
             break;
         case 'dls':
             vacuum = new DepthLimitedVacuum(rows, columns);
+            break;
+        case 'idls':
+            vacuum = new IterativeDepthLimitedVacuum(rows, columns);
             break;
     }
 };
