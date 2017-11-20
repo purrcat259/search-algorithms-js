@@ -29,19 +29,6 @@ export default class TreeVisualisation {
             }
             this.nodes.push(treeNode);
         }
-        // If the route IDs are available, change the colours of the nodes
-        if (this.routeIds && this.routeIds.length) {
-            // Add the route node id if it is not present
-            if (this.routeIds.indexOf(this.root.id) === -1) {
-                this.routeIds.push(this.root.id);
-            }
-            for (let i = 0; i < this.nodes.length; i++) {
-                let node = this.nodes[i];
-                if (this.routeIds.indexOf(node.id) !== -1) {
-                    node.color = 'red';
-                }
-            }
-        }
         // console.log(this.nodes);
         this.edges = this.generateEdges([this.root], []);
         // console.log(edges);
@@ -109,9 +96,16 @@ export default class TreeVisualisation {
         for (let i = 0; i < route.length; i++) {
             routeIds.push(route[i].id);
         }
-        this.routeIds = routeIds;
+        // Add the root
+        routeIds.push(this.root.id);
+        for (let i = 0; i < this.nodes.length; i++) {
+            let node = this.nodes[i];
+            if (routeIds.indexOf(node.id) !== -1) {
+                node.color = 'red';
+            }
+        }
         console.log('Highlighting Route');
-        this.draw();
+        this.drawNetwork(this.nodes, this.edges);
     }
 
     showNoPathFound() {
@@ -120,7 +114,7 @@ export default class TreeVisualisation {
         }
         // TODO: this.nodes is rewritten after .draw()
         console.log('Showing no path found');
-        this.draw();
+        this.drawNetwork(this.nodes, this.edges);
     }
 
     extractAllNodes(items, result) {
