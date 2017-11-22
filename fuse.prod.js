@@ -31,6 +31,6 @@ const fuse = FuseBox.init({
 });
 
 fuse.bundle('client/app')
-    .instructions('> js/demo-vacuum-world.js');
+    .instructions('> demo.js');
 
 fuse.run();

@@ -25,9 +25,9 @@ const fuse = FuseBox.init({
 });
 
 fuse.bundle('client/app')
-    .watch('src/js/**')
+    .watch('src/**')
     .hmr({reload : true})
-    .instructions('> js/demo.js');
+    .instructions('> demo.js');
 
 fuse.dev();
 
