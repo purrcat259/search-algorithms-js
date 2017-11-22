@@ -18,7 +18,12 @@ const fuse = FuseBox.init({
         WebIndexPlugin({
             template: './src/vacuum-world.html'
         }),
-        [SassPlugin(), CSSPlugin()],
+        [
+            SassPlugin({
+                outputStyle: 'compressed'
+            }),
+            CSSPlugin()
+        ],
         BabelPlugin(),
         QuantumPlugin({
             target: 'browser',
