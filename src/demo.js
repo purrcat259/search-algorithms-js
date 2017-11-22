@@ -77,8 +77,10 @@ document.getElementById('initButton').addEventListener('click', () => {
 document.getElementById('iterationButton').addEventListener('click', () => {
     iteration += 1;
     updateIterationCount(iteration);
-    vacuum.runIteration();
     treeVis.drawIterative(vacuum.currentNode);
+    vacuum.runIteration();
+    // TODO: Check if complete
+
 });
 
 document.getElementById('startButton').addEventListener('click', () => {
@@ -107,7 +109,7 @@ document.getElementById('startButton').addEventListener('click', () => {
 document.getElementById('stopButton').addEventListener('click', () => {
     if (vacuumRunning) {
         clearInterval(vacuumRunning);
-        console.log('Stopped');
+        console.log('Stopped running vacuum');
         treeVis.drawIterative();
     }
 });
