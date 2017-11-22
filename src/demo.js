@@ -39,6 +39,11 @@ const drawResultantPath = (route) => {
 };
 
 const initialiseVacuumWorld = () => {
+    if (vacuum) {
+        vacuum = undefined;
+        iteration = 0;
+        document.getElementById('pathResult').innerHTML = '';
+    }
     let searchSelect = document.getElementById('searchSelect');
     let chosenType = searchSelect.options[searchSelect.selectedIndex].value;
     switch (chosenType) {
