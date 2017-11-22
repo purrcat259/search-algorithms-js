@@ -85,8 +85,8 @@ document.getElementById('startButton').addEventListener('click', () => {
             }
         } else {
             iteration += 1;
-            vacuum.runIteration();
             treeVis.drawIterative(vacuum.currentNode);
+            vacuum.runIteration();
             // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
         }
     }, intervalMs);

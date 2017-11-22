@@ -3,19 +3,14 @@ import SearchNode from './models/search-node';
 
 // Clean has been moved to the end since actions are stacked, not queued
 const depthFirstPossibleActions = ['MU', 'ML', 'MD', 'MR', 'C'];
-const startingDepthLimit = 3;
-const finalDepthLimit = 10;
+const startingDepthLimit = 2;
+const finalDepthLimit = 5;
 
 export default class IterativeDepthLimitedVacuum extends Vacuum {
     constructor(rows, columns) {
         super(rows, columns);
         this.stateStack = [];
         this.depthLimit = startingDepthLimit;
-    }
-
-    init() {
-        super.init();
-        this.firstNodeInLevel = this.root;
     }
 
     runIteration() {
@@ -43,9 +38,6 @@ export default class IterativeDepthLimitedVacuum extends Vacuum {
         }
         // Remove the last element from the queue
         this.currentNode = this.stateStack.pop();
-        if (this.currentNode && this.currentNode.level > this.firstNodeInLevel.level) {
-            this.firstNodeInLevel = this.currentNode;
-        }
     }
 
     // Override with new possible actions list
@@ -58,10 +50,24 @@ export default class IterativeDepthLimitedVacuum extends Vacuum {
         if (this.noPathFound() && this.depthLimit < finalDepthLimit) {
             this.depthLimit += 1;
             console.log(`Depth increased to: ${this.depthLimit}`);
-            // Re-set current Node
-            this.currentNode = this.firstNodeInLevel;
+            // Delete all nodes and set current node to root again
+            this.destroyTree(this.root);
+            // Recreate the root's child nodes array
+            this.root.childNodes = [];
+            this.currentNode = this.root;
             return true;
         }
+        console.log(`Maximum depth limit reached: ${this.finalDepthLimit}`);
         return super.canContinue();
+    }
+
+    destroyTree(root) {
+        if (root.childNodes && root.childNodes.length) {
+            let children = root.childNodes;
+            for (let i = 0; i < children.length; i++) {
+                this.destroyTree(children[i]);
+            }
+            delete root.childNodes;
+        }
     }
  }

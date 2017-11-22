@@ -38,6 +38,11 @@ export default class TreeVisualisation {
 
     drawIterative(node) {
         // this.destroy();
+        // If passed the root, redraw from scratch instead
+        if (node && node.id === this.root.id) {
+            this.draw(node);
+            return;
+        }
         if (node) {
             // convert the node to the representation required for the graph
             let treeNode = {
