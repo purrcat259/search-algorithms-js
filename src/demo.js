@@ -44,6 +44,10 @@ const initialiseVacuumWorld = () => {
         iteration = 0;
         document.getElementById('pathResult').innerHTML = '';
     }
+    // Get the number of rows and columns, defaulting to 2
+    rows = parseInt(document.getElementById('rowCount').value) || 2;
+    columns = parseInt(document.getElementById('colCount').value) || 2;
+    // Get the search type
     let searchSelect = document.getElementById('searchSelect');
     let chosenType = searchSelect.options[searchSelect.selectedIndex].value;
     switch (chosenType) {
