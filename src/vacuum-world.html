@@ -3,36 +3,38 @@
         <title>$title</title>
     </head>
     <body>
-        <h1>Vacuum World</h1>
-        <noscript>JavaScript is required to display the vacuum world</noscript>
-        <select id="searchSelect">
-            <option value="bfs">Breadth First Search</option>
-            <option value="dfs">Depth First Search</option>
-            <option value="dls">Depth Limited Search</option>
-            <option value="idls">Iterative Depth Limited Search</option>
-        </select>
-        <button id="initButton" type="button" name="initButton">
-            Click here to initialise Vacuum
-        </button>
-        <button id="iterationButton" type="button" name="iterationButton">
-            Run Vacuum Iteration
-        </button>
-        <button id="startButton" type="button" name="startButton">
-            Start Vacuum
-        </button>
-        <button id="stopButton" type="button" name="stopButton">
-            Stop Vacuum
-        </button>
-        <div>
-            <p>Queue Length: <span id="queueCount"></span></p>
-            <div>
+        <h1 class="heading">Vacuum World</h1>
+        <div class="container options">
+            <select id="searchSelect" class="item">
+                <option value="bfs">Breadth First Search</option>
+                <option value="dfs">Depth First Search</option>
+                <option value="dls">Depth Limited Search</option>
+                <option value="idls">Iterative Depth Limited Search</option>
+            </select>
+            <button id="initButton" class="item" type="button" name="initButton">
+                Initialise Vacuum
+            </button>
+            <button id="startButton" class="item" type="button" name="startButton">
+                Start
+            </button>
+            <button id="iterationButton" class="item" type="button" name="iterationButton">
+                Run Iteration
+            </button>
+            <button id="stopButton" class="item" type="button" name="stopButton">
+                Stop
+            </button>
+        </div>
+        <div class="container display">
+            <div class="value">
+                <p>Iteration Count: <span id="iterationCount"></span></p>
+            </div>
+            <div class="value">
                 <p>Path Result: </p>
-                <div id="pathResult">
-
-                </div>
+                <div id="pathResult"></div>
             </div>
         </div>
-        <div id="networkVis"></div>
+        <noscript>JavaScript is required to display the vacuum world</noscript>
+        <div id="networkVis" class="graph"></div>
     </body>
     $bundles
 </html>

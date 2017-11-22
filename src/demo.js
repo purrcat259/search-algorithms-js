@@ -1,3 +1,5 @@
+import './demo.scss';
+
 import BreadthFirstVacuum from './vacuum-world/breadth-first-vacuum';
 import DepthFirstVacuum from './vacuum-world/depth-first-vacuum';
 import DepthLimitedVacuum from './vacuum-world/depth-limited-vacuum';
@@ -13,9 +15,11 @@ let intervalMs = 50;
 let iteration = 0;
 let vacuumRunning = null;
 
-const updateStateQueueCount = (count) => {
-    document.getElementById('queueCount').innerText = count;
+const updateIterationCount = (count) => {
+    document.getElementById('iterationCount').innerText = count;
 };
+
+updateIterationCount(iteration);
 
 const drawResultantPath = (route) => {
     // Clear any old paths
@@ -56,7 +60,6 @@ const initialiseVacuumWorld = () => {
 document.getElementById('initButton').addEventListener('click', () => {
     initialiseVacuumWorld();
     vacuum.init();
-    // updateStateQueueCount(0); // TODO: Generalise
     // Init creates the parent node we need for tree visualisation
     treeVis = new TreeVisualisation(vacuum.root);
     treeVis.drawIterative(vacuum.root);
@@ -64,8 +67,8 @@ document.getElementById('initButton').addEventListener('click', () => {
 
 document.getElementById('iterationButton').addEventListener('click', () => {
     iteration += 1;
+    updateIterationCount(iteration);
     vacuum.runIteration();
-    // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
     treeVis.drawIterative(vacuum.currentNode);
 });
 
@@ -85,9 +88,9 @@ document.getElementById('startButton').addEventListener('click', () => {
             }
         } else {
             iteration += 1;
+            updateIterationCount(iteration);
             treeVis.drawIterative(vacuum.currentNode);
             vacuum.runIteration();
-            // updateStateQueueCount(vacuum.stateQueue.length); // TODO: Generalise
         }
     }, intervalMs);
 });

@@ -1,0 +1,40 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+}
+
+.heading {
+    text-align: center;
+    padding: .5em;
+}
+
+.container {
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+
+    &.options {
+        flex-grow: 1;
+
+        .item {
+            width: auto;
+            padding: .5em 3em;
+            background-color: white;
+        }
+    }
+
+    &.display {
+        flex-grow: 1;
+
+        .value {
+            width: auto;
+        }
+    }
+}
+
+.graph {
+    width: 100%;
+    height: 75%;
+}
