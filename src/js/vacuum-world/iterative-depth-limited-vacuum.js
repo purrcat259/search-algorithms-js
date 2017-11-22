@@ -57,7 +57,6 @@ export default class IterativeDepthLimitedVacuum extends Vacuum {
             this.currentNode = this.root;
             return true;
         }
-        console.log(`Maximum depth limit reached: ${this.finalDepthLimit}`);
         return super.canContinue();
     }
 
